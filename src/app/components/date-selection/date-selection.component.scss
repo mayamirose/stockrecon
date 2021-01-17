@@ -1,0 +1,40 @@
+@import "../../../scss/colours";
+
+.calendar-input {
+  margin-left: 20px;
+  height: 40px;
+  flex: 1 1 auto;
+  border-radius: 5px;
+  padding: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.form-container {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  top: 8px;
+}
+
+.period-input {
+  flex: 1 1 auto;
+  min-width: 100px;
+  padding: 6px;
+  font-size: 16px;
+  color: $text-colour;
+  background-color: $primary-colour;
+  border: none;
+  border-bottom: solid 1px $text-colour;
+}
+
+.period-input:focus {
+  outline: none;
+}
+
+.margin-left {
+  margin-left: 10px;
+}

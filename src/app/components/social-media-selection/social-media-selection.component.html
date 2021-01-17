@@ -1,0 +1,16 @@
+<div class="form-card large-padding scrollbar border-radius border-box" aria-label="Step 2: select social media">
+  <div class="header flex-row y-centre unselectable">
+    <div class="step-div flex-row y-centre x-centre">2</div>
+    <span i18n="@@selectSocialMedia">Select Social Media</span>
+  </div>
+
+  <div class="card-content">
+    <ng-container *ngFor="let social of socials">
+      <div class="flex-row y-centre radio-button-wrapper">
+        <input id="{{social.name}}" class="w3-radio radio-button pointer" type="radio"
+               aria-label="{{social.name}} radio button" (click)="selectSocial(social)" [checked]="social === selectedSocial">
+        <label class="radio-label">{{social.name}}</label>
+      </div>
+    </ng-container>
+  </div>
+</div>

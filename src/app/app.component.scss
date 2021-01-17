@@ -1,0 +1,30 @@
+@import "../scss/colours";
+
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: auto;
+}
+
+.app-padding {
+  padding: 10vh 5vw 5vw;
+}
+
+.selection-wrapper {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.selection-card-wrapper {
+  min-width: 250px;
+  max-width: 550px;
+  width: 100%;
+  padding-top: 20px;
+  box-sizing: border-box;
+  margin: auto;
+}
+
+.data-card-wrapper {
+  padding-top: 6vh;
+  min-width: 250px;
+}

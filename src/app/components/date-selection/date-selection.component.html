@@ -1,0 +1,39 @@
+<div class="form-card scrollbar large-padding border-radius border-box"
+     aria-label="Step 3: select start date and period">
+  <div class="header flex-row y-centre unselectable">
+    <div class="step-div flex-row y-centre x-centre">3</div>
+    <span i18n="@@selectDate">Select Date</span>
+  </div>
+
+  <div class="card-content flex-column">
+    <div class="flex-row y-centre">
+      <label class="text-colour">
+        <span i18n="@@startDate">Start Date</span>
+        <span>: </span>
+      </label>
+      <input class="calendar-input pointer" [value]="today" type="date" aria-label="calendar input"
+             (change)="selectDate($event.target.value)">
+    </div>
+
+    <form class="form-container flex-row y-centre">
+      <label class="text-colour small-font">
+        <span i18n="@@periodDays">Period (days)</span>
+        <span>: </span>
+      </label>
+      <div class="margin-left input-wrapper">
+        <input type="number" [formControl]="periodInput" min="10" max="30" aria-label="Number of days input"
+               autocomplete="off" class="period-input">
+        <div class="small-font text-colour">
+          <span aria-label="min value is 10">
+            <span i18n="@@min">min</span>
+            <span>: 10</span>
+          </span>
+          <span aria-label="max value is 30" class="margin-left">
+            <span i18n="@@min">max</span>
+            <span>: 30</span>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

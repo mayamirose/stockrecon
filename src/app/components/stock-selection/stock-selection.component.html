@@ -1,0 +1,29 @@
+<div class="form-card large-padding scrollbar border-radius border-box" aria-label="Step 1: select stock">
+  <div class="header flex-row y-centre unselectable">
+    <div class="step-div flex-row y-centre x-centre">1</div>
+    <span i18n="@@selectStock">Select Stock</span>
+  </div>
+
+  <div class="card-content">
+    <form class="flex-column form-container">
+      <label i18n="@@searchStock" class="text-colour small-font">Search Stock</label>
+      <div class="flex-row">
+        <input type="text" [formControl]="searchInput" aria-label="Stock name or symbol input"
+               autocomplete="off">
+        <button i18n="@@search" aria-label="search button" class="search-button pointer"
+                (click)="selectStock(searchInput.value)">Search
+        </button>
+      </div>
+      <span *ngIf="error" i18n="@@stockDoesNotExist" class="error-text small-font"
+            aria-label="stock does {{searchInput.value}} not exist">Stock {{searchInput.value}}
+        does <strong>not</strong> exist. Please check input and try again.</span>
+    </form>
+
+    <div class="stock-info flex-column" *ngIf="selectedStock" aria-label="selected stock info">
+      <div class="flex-row">
+        <span class="semi-bold">{{selectedStock.name}} ({{selectedStock.symbol}})</span>
+      </div>
+      <span>{{selectedStock.description}}</span>
+    </div>
+  </div>
+</div>

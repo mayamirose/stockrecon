@@ -1,0 +1,35 @@
+@import "../../../scss/colours";
+
+.form-container {
+  width: 100%;
+}
+
+input {
+  flex: 1 1 auto;
+  min-width: 100px;
+  padding: 6px;
+  font-size: 16px;
+  color: $text-colour;
+  background-color: $primary-colour;
+  border: none;
+  border-bottom: solid 1px $text-colour;
+}
+
+input:focus {
+  outline: none;
+}
+
+.error-text {
+  margin: 2px;
+  color: $warn-colour;
+}
+
+.search-button {
+  border-radius: 5px;
+  margin-left: 20px;
+}
+
+.stock-info {
+  color: $text-colour;
+  margin-top: 20px;
+}

@@ -1,0 +1,15 @@
+@import "../../../scss/colours";
+
+.radio-button-wrapper {
+  margin-bottom: 20px;
+}
+
+.radio-button {
+  height: 20px;
+  width: 20px;
+}
+
+.radio-label {
+  margin-left: 10px;
+  color: $text-colour;
+}

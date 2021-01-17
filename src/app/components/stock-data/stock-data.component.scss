@@ -1,0 +1,57 @@
+@import "../../../scss/colours";
+
+.card {
+  background-color: $primary-colour;
+  min-height: 200px;
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.table-container {
+  padding: 1vw;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 25%);
+  grid-template-rows: repeat(auto-fill, 30px);;
+}
+
+.grid > div:nth-child(8n + 5),
+.grid > div:nth-child(8n + 6),
+.grid > div:nth-child(8n + 7),
+.grid > div:nth-child(8n + 8) {
+  background-color: $alt2-colour;
+}
+
+.grid > div:nth-child(8n + 5) {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.grid > div:nth-child(8n + 8) {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.padding-left {
+  padding-left: 8px;
+}
+
+.cell-padding {
+  padding-left: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.buy-text {
+  color: $green-colour
+}
+
+.sell-text {
+  color: $red-colour
+}
+
+.hold-text {
+  color: $amber-colour
+}

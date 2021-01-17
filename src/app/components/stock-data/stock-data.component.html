@@ -1,0 +1,37 @@
+<div class="card border-radius scrollbar border-box large-padding" aria-label="Chosen stock prediction data">
+  <div class="header flex-row y-centre unselectable data-title">
+    <div>
+      <span>{{selectedStock?.symbol}} </span>
+      <span i18n="@@stockRecommendation">stock recommendation based on </span>
+      <span>{{selectedSocial?.name}} </span>
+      <span i18n="@@postsFor">posts for </span>
+      <span>{{selectedDays}} </span>
+      <span i18n="@@days">days</span>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <!-- Grid html code to display stock data for given days -->
+    <div class="text-colour grid small-font" aria-label="stock data table">
+      <div i18n="@@date" class="normal-font" aria-label="date column">Date</div>
+      <div i18n="@@price" class="normal-font padding-left" aria-label="price column">Price</div>
+      <div i18n="@@posts" class="normal-font padding-left" aria-label="posts column">Posts</div>
+      <div i18n="@@recommendation" class="normal-font overflow-text" aria-label="recommendation column">Recommendation
+      </div>
+
+      <ng-container *ngFor="let date of arrayOfDates">
+        <div class="cell-padding" aria-label="{{date}}">{{date}}</div>
+        <div class="cell-padding"
+             aria-label="price {{stockDataMap.get(date).price}}">{{stockDataMap.get(date).price | currency: 'CAD':'symbol-narrow':'1.2-2'}}</div>
+        <div class="cell-padding"
+             aria-label="count {{stockDataMap.get(date).socialCount}}">{{stockDataMap.get(date).socialCount}}</div>
+        <div class="cell-padding" aria-label="recommendation">
+          <span *ngIf="stockDataMap.get(date).recommendation === recommendations.BUY" i18n="buy"
+                class="buy-text">buy</span>
+          <span *ngIf="stockDataMap.get(date).recommendation === recommendations.SELL" i18n="sell" class="sell-text">sell</span>
+          <span *ngIf="stockDataMap.get(date).recommendation === recommendations.HOLD" i18n="hold" class="hold-text">hold</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
