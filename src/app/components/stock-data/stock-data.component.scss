@@ -7,6 +7,18 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.padding-bottom {
+  padding-bottom: 12px;
+}
+
+.selection {
+  flex: 1 1 auto;
+  border-radius: 5px;
+  height: 40px;
+  padding: 4px;
+  box-sizing: border-box;
+}
+
 .table-container {
   padding: 1vw;
 }
@@ -54,4 +66,24 @@
 
 .hold-text {
   color: $amber-colour
+}
+
+.input-container {
+  margin-left: 20px;
+}
+
+.field-input {
+  max-width: 200px;
+  flex: 1 1 auto;
+  min-width: 100px;
+  padding: 6px;
+  font-size: 16px;
+  color: $text-colour;
+  background-color: $primary-colour;
+  border: none;
+  border-bottom: solid 1px $text-colour;
+}
+
+.field-input:focus {
+  outline: none;
 }

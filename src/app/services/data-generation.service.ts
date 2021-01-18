@@ -1,7 +1,7 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Stock} from '../models/stock';
 import {SocialMedia} from '../models/social-media';
-import {BehaviorSubject} from 'rxjs';
+import {RecommendationAlgorithm} from '../models/recommendationAlgorithm';
 
 @Injectable({
   providedIn: 'root'
@@ -13,17 +13,11 @@ import {BehaviorSubject} from 'rxjs';
  */
 export class DataGenerationService {
 
-  private socials = new BehaviorSubject<SocialMedia[]>(null);
-  socialsX = this.socials.asObservable();
-
-  private stocks = new BehaviorSubject<Stock[]>(null);
-  stocksX = this.stocks.asObservable();
-
   constructor() {
   }
 
-  fetchStocks(): void {
-    const apiStocks: Stock[] = [
+  fetchStocks(): Stock[] {
+    return [
       {
         name: 'Toussaint Blood and Wine Services',
         symbol: 'TBWS',
@@ -40,16 +34,22 @@ export class DataGenerationService {
       },
       {name: 'Stormcloaks Northern Supplies', symbol: 'SNS', description: 'Skyrim belongs to the nords, and too do it\'s supplies.'},
     ];
-    this.stocks.next(apiStocks);
   }
 
-  fetchSocialMedias(): void {
-    const apiSocials: SocialMedia[] = [
+  fetchSocialMedias(): SocialMedia[] {
+    return [
       {name: 'Facebook'},
       {name: 'Twitter'},
       {name: 'Instagram'},
       {name: 'Tumblr'},
     ];
-    this.socials.next(apiSocials);
+  }
+
+  fetchAlgorithms(): RecommendationAlgorithm[] {
+    return [
+      {id: '1', name: 'Generic', requireExtras: null},
+      {id: '2', name: 'Advanced', requireExtras: ['constant']},
+      {id: '3', name: 'Guy who predicted bitcoin in 2012', requireExtras: ['risk ratio 1', 'risk ratio 2']},
+    ];
   }
 }

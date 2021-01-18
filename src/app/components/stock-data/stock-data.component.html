@@ -1,6 +1,6 @@
 <div class="card border-radius scrollbar border-box large-padding" aria-label="Chosen stock prediction data">
-  <div class="header flex-row y-centre unselectable data-title">
-    <div>
+  <div class="header flex-row y-centre unselectable data-title wrap">
+    <div class="padding-bottom">
       <span>{{selectedStock?.symbol}} </span>
       <span i18n="@@stockRecommendation">stock recommendation based on </span>
       <span>{{selectedSocial?.name}} </span>
@@ -8,7 +8,32 @@
       <span>{{selectedDays}} </span>
       <span i18n="@@days">days</span>
     </div>
+    <span class="flex-spacer"></span>
+
+    <div class="normal-font flex-row y-centre wrap padding-bottom">
+      <label i18n="@@recommendationAlgorithm" aria-label="recommendation algorithm">Recommendation algorithm</label>
+      <span>:&nbsp;&nbsp;</span>
+      <select aria-label="algorithm selection drop down" class="selection pointer" [formControl]="algorithm">
+        <ng-container *ngFor="let algo of algorithms">
+          <option value="{{algo.id}}">{{algo.name}}</option>
+        </ng-container>
+      </select>
+    </div>
   </div>
+
+  <form *ngIf="algorithmForm" [formGroup]="algorithmForm.get('extraFields')">
+    <div class="flex-row wrap" *ngIf="selectedAlgorithm?.requireExtras">
+      <span class="flex-spacer"></span>
+      <ng-container *ngFor="let field of selectedAlgorithm.requireExtras">
+        <div class="padding-bottom flex-column input-container">
+          <label class="small-font text-colour">{{field}}</label>
+          <input type="number" aria-label="extra field input"
+                 autocomplete="off" class="field-input" formControlName="{{field}}">
+        </div>
+      </ng-container>
+    </div>
+  </form>
+
 
   <div class="table-container">
     <!-- Grid html code to display stock data for given days -->

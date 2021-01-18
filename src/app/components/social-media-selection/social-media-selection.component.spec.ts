@@ -29,12 +29,4 @@ describe('SocialMediaSelectionComponent', () => {
     fixture.detectChanges();
     expect(component.selectedSocial).toEqual({name: 'Facebook'});
   });
-
-  // Test to make sure socials displayed here are complete
-  it('social medias displayed should equal social medias "backend" return', () => {
-    expect(component.socials).toEqual([{name: 'Facebook'},
-      {name: 'Twitter'},
-      {name: 'Instagram'},
-      {name: 'Tumblr'}]);
-  });
 });

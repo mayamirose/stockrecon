@@ -13,14 +13,19 @@ import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 export class StockSelectionComponent implements OnInit, OnDestroy {
 
   selectedStock: Stock;
-  searchInput = new FormControl(null, []);
+  searchInput = new FormControl('', []);
+  stocks: Stock[];
+  filteredStocks: Stock[];
+  searchInputFocus = false;
   error = false;
   private ngUnsubscribe = new Subject();
 
-  constructor(private stockDataStoreService: StockDataStoreService) {
+  constructor(private stockDataStoreService: StockDataStoreService,) {
   }
 
   ngOnInit(): void {
+    this.stocks = this.stockDataStoreService.fetchStocks();
+    this.filteredStocks = this.fetchStocks(this.searchInput.value);
     this.stockListener();
     this.formListener();
   }
@@ -41,23 +46,55 @@ export class StockSelectionComponent implements OnInit, OnDestroy {
     // Give user time to finish input before checking if below min or max
     this.searchInput.valueChanges.pipe(takeUntil(this.ngUnsubscribe),
       distinctUntilChanged(),
-      debounceTime(1000)).subscribe(resp => {
-      this.selectStock(resp);
+      debounceTime(300)).subscribe(resp => {
+      // Filter stocks by name or symbol based on input
+      this.filteredStocks = this.fetchStocks(resp);
+      if (this.filteredStocks.length > 0) {
+        this.error = false;
+      } else {
+        this.error = true;
+        this.stockDataStoreService.selectStock(null);
+      }
     });
   }
 
-  selectStock(identifier: string): void {
-    this.error = false;
+  // Search for existing stock if user hits enter key or search button
+  searchStock(identifier: string): void {
     if (identifier) {
-      // Check if stock exists
-      const stock = this.stockDataStoreService.fetchStock(identifier);
+      const stock = this.fetchStock(identifier);
+      // If stock exists select it else set to null
       if (stock) {
         this.stockDataStoreService.selectStock(stock);
-        return;
       } else {
-        this.error = true;
+        this.stockDataStoreService.selectStock(null);
       }
     }
-    this.stockDataStoreService.selectStock(null);
+  }
+
+  // Select stock if user clicks on autocomplete stock
+  selectStock(stock: Stock): void {
+    if (stock) {
+      this.searchInput.setValue(stock.symbol);
+    }
+    this.searchInputFocus = false;
+    this.stockDataStoreService.selectStock(stock);
+  }
+
+  // Returns all stocks that contain the input in its symbol or name
+  fetchStocks(id: string): Stock[] {
+    return this.stocks?.filter(s => s.symbol.toLowerCase().includes(id?.toLowerCase()) || s.name.toLowerCase().includes(id?.toLowerCase()));
+  }
+
+  // Check if stock exists in list of stocks
+  fetchStock(id: string): Stock {
+    return this.stocks?.find(s => s.symbol.toLowerCase() === id.toLowerCase() || s.name.toLowerCase() === id.toLowerCase());
+  }
+
+  checkIfDisplayAutocomplete(): boolean {
+    if (this.filteredStocks?.length > 0) {
+      return this.searchInputFocus;
+    } else {
+      return false;
+    }
   }
 }

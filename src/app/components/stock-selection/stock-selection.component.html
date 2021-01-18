@@ -5,15 +5,28 @@
   </div>
 
   <div class="card-content">
-    <form class="flex-column form-container">
+    <form class="flex-column form-container" appOutsideClick
+          (outsideClick)="searchInputFocus = false" [id]="'search-form'" id="search-form">
       <label i18n="@@searchStock" class="text-colour small-font">Search Stock</label>
       <div class="flex-row">
         <input type="text" [formControl]="searchInput" aria-label="Stock name or symbol input"
-               autocomplete="off">
+               autocomplete="off" (focusin)="searchInputFocus = true" class="search-input"
+               (keydown.enter)="$event.target.blur(); searchInputFocus = false; searchStock(searchInput.value)">
         <button i18n="@@search" aria-label="search button" class="search-button pointer"
-                (click)="selectStock(searchInput.value)">Search
+                (click)="searchStock(searchInput.value)">Search
         </button>
       </div>
+
+      <ng-container *ngIf="checkIfDisplayAutocomplete()">
+        <div class="filter-card border-radius medium-padding scrollbar border-box">
+          <ng-container *ngFor="let stock of filteredStocks">
+            <div class="text-colour pointer stock-div" (click)="selectStock(stock)">
+              <span>{{stock.symbol}} - {{stock.name}}</span>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
       <span *ngIf="error" i18n="@@stockDoesNotExist" class="error-text small-font"
             aria-label="stock does {{searchInput.value}} not exist">Stock {{searchInput.value}}
         does <strong>not</strong> exist. Please check input and try again.</span>

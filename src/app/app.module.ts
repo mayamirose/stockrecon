@@ -9,6 +9,7 @@ import { DateSelectionComponent } from './components/date-selection/date-selecti
 import { StockDataComponent } from './components/stock-data/stock-data.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DatePipe} from '@angular/common';
+import { OutsideClickDirective } from './directives/outside-click.directive';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {DatePipe} from '@angular/common';
     HeaderComponent,
     StockSelectionComponent,
     DateSelectionComponent,
-    StockDataComponent
+    StockDataComponent,
+    OutsideClickDirective
   ],
   imports: [
     BrowserModule,

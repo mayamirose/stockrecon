@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Stock} from '../models/stock';
-import {DataGenerationService} from './data-generation.service';
 import {SocialMedia} from '../models/social-media';
 import * as moment from 'moment';
+import {RecommendationAlgorithm} from '../models/recommendationAlgorithm';
+import {DataGenerationService} from './data-generation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,42 +25,38 @@ export class StockDataStoreService {
   private stockDataMap = new BehaviorSubject<Map<string, StockData>>(null);
   stockDataMapX = this.stockDataMap.asObservable();
 
-  stocks: Stock[];
-
-  socials: SocialMedia[];
+  private algorithm: any;
 
   constructor(private dataGenerationService: DataGenerationService) {
-    this.stocksListener();
-    this.socialsListener();
-
-    // In real world application this would either be fetched on application load or every X minutes depending on purpose of app
-    this.dataGenerationService.fetchStocks();
-    this.dataGenerationService.fetchSocialMedias();
   }
 
-  // Listen for stocks variable changes
-  stocksListener(): void {
-    this.dataGenerationService.stocksX.subscribe(resp => {
-      this.stocks = resp;
-      console.log('stocks: ', this.stocks);
-    });
+  // These would be observables with real API implemented
+  fetchStocks(): Stock[] {
+    return this.dataGenerationService.fetchStocks();
   }
 
-  // Listen for socials variable changes
-  socialsListener(): void {
-    this.dataGenerationService.socialsX.subscribe(resp => {
-      this.socials = resp;
-    });
+  // These would be observables with real API implemented
+  fetchSocialMedias(): SocialMedia[] {
+    return this.dataGenerationService.fetchSocialMedias();
+  }
+
+  // These would be observables with real API implemented
+  fetchAlgorithms(): RecommendationAlgorithm[] {
+    return this.dataGenerationService.fetchAlgorithms();
+  }
+
+  setAlgorithm(algo: any): void {
+    this.algorithm = algo;
+    this.initArrayOfDates(this.selectedDate.value, this.selectedDays.value);
+  }
+
+  getAlgorithm(): any {
+    return this.algorithm;
   }
 
   selectStock(stock: Stock): void {
     this.selectedStock.next(stock);
     this.initArrayOfDates(this.selectedDate.value, this.selectedDays.value);
-  }
-
-  // Check if stock exists in list of stocks
-  fetchStock(id: string): Stock {
-    return this.stocks.find(s => s.symbol.toLowerCase() === id.toLowerCase() || s.name.toLowerCase() === id.toLowerCase());
   }
 
   selectSocial(social: SocialMedia): void {
@@ -115,7 +112,12 @@ export class StockDataStoreService {
       tempMap.set(d, tempObject);
 
       // Fetch recommendation based on price and social count calls
-      tempMap.get(d).recommendation = this.recommendationAlgorithm(tempMap.get(d).price, tempMap.get(d).socialCount);
+      // Unsure how to implement this to meet the feature requirement of "It would be simply amazing if you could
+      // swap out algorithms that recommend a buy/hold/sell rating on the fly" so I am making the assumption this
+      // meant to be handled in the front end therefore the "stock" recommendationAlgorithm function will be adjusted
+      // to allow for this. Now it also takes in an algorithm and its args, if no algorithm set then send null which
+      // is equivalent as generic algorithm
+      tempMap.get(d).recommendation = this.recommendationAlgorithm(tempMap.get(d).price, tempMap.get(d).socialCount, this.algorithm ? this.algorithm : null);
     });
 
     this.updateStockDataMap(tempMap);
@@ -155,7 +157,10 @@ export class StockDataStoreService {
     return this.randomFromInterval(100, 1000);
   }
 
-  recommendationAlgorithm(stockPrice: number, socialMediaCounts: number): number {
+  // Algorithm argument hits backend with an algorithm id and args via http params and backend would return the recommendation.
+  // If null then just use generic algorithm
+  recommendationAlgorithm(stockPrice: number, socialMediaCounts: number, algorithm: RecommendationAlgorithm): number {
+    // console.log(algorithm);
     return Math.floor(Math.random() * 3) + 1;
   }
 

@@ -47,11 +47,10 @@ export class DateSelectionComponent implements OnInit, OnDestroy {
   formListener(): void {
     // Give user time to finish input before checking if below min or max
     this.periodInput.valueChanges.pipe(takeUntil(this.ngUnsubscribe),
-      distinctUntilChanged(),
-      debounceTime(700)).subscribe(resp => {
-      if (this.periodInput.hasError('min')) {
+      distinctUntilChanged(), debounceTime(500)).subscribe(resp => {
+      if (resp < 10) {
         this.periodInput.setValue(10);
-      } else if (this.periodInput.hasError('max')) {
+      } else if (resp > 30) {
         this.periodInput.setValue(30);
       }
 

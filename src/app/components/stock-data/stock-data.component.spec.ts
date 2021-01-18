@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StockDataComponent } from './stock-data.component';
+import {StockDataComponent} from './stock-data.component';
 
 describe('StockDataComponent', () => {
   let component: StockDataComponent;
@@ -8,9 +8,9 @@ describe('StockDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StockDataComponent ]
+      declarations: [StockDataComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -21,5 +21,14 @@ describe('StockDataComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  // Test from creation
+  it('should create a form', () => {
+    component.algorithms = [{id: '1', name: 'Generic', requireExtras: null},
+      {id: '2', name: 'Advanced', requireExtras: ['constant']},
+      {id: '3', name: 'Guy who predicted bitcoin in 2012', requireExtras: ['risk ratio 1', 'risk ratio 2']}];
+    component.algorithm.setValue({id: '3', name: 'Guy who predicted bitcoin in 2012', requireExtras: ['risk ratio 1', 'risk ratio 2']},);
+    expect(component.algorithmForm).toBeTruthy();
   });
 });

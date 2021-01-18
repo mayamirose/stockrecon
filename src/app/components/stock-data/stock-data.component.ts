@@ -3,7 +3,9 @@ import {Stock} from '../../models/stock';
 import {SocialMedia} from '../../models/social-media';
 import {Recommendation, StockData, StockDataStoreService} from '../../services/stock-data-store.service';
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
+import {FormControl, FormGroup} from '@angular/forms';
+import {RecommendationAlgorithm} from '../../models/recommendationAlgorithm';
 
 @Component({
   selector: 'app-stock-data',
@@ -19,6 +21,11 @@ export class StockDataComponent implements OnInit, OnDestroy {
   selectedSocial: SocialMedia;
   stockDataMap: Map<string, StockData>;
   recommendations = Recommendation;
+  selectedAlgorithm: RecommendationAlgorithm;
+  algorithms: RecommendationAlgorithm[];
+  algorithmForm: FormGroup;
+  algorithm = new FormControl(null, []);
+
   private ngUnsubscribe = new Subject();
 
   constructor(private stockDataStoreService: StockDataStoreService) {
@@ -26,11 +33,27 @@ export class StockDataComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.dataListener();
+    this.algorithmListener();
+    this.algorithms = this.stockDataStoreService.fetchAlgorithms();
+    this.algorithm.setValue(this.algorithms ? this.algorithms[0]?.id : null);
   }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  algorithmListener(): void {
+    this.algorithm.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(resp => {
+      // Update algorithm selected with user values
+      this.selectedAlgorithm = {...this.algorithms.find(a => a.id === resp)};
+      this.algorithmForm = this.buildAlgorithmForm();
+      this.stockDataStoreService.setAlgorithm(this.algorithmForm.value);
+      this.algorithmForm.get('extraFields').valueChanges.pipe(takeUntil(this.ngUnsubscribe),
+        distinctUntilChanged(), debounceTime(500)).subscribe(extraFieldsResp => {
+        this.stockDataStoreService.setAlgorithm(this.algorithmForm.value);
+      });
+    });
   }
 
   // Listen for all required data for the stock data recommendation component
@@ -57,7 +80,21 @@ export class StockDataComponent implements OnInit, OnDestroy {
 
     this.stockDataStoreService.stockDataMapX.pipe(takeUntil(this.ngUnsubscribe)).subscribe(resp => {
       this.stockDataMap = resp;
-      console.log(this.stockDataMap);
     });
+  }
+
+  buildAlgorithmForm(): FormGroup {
+    return new FormGroup({
+      algorithmId: new FormControl(this.selectedAlgorithm.id, []),
+      extraFields: this.buildExtraFieldsForm()
+    });
+  }
+
+  buildExtraFieldsForm(): FormGroup {
+    const tempFormGroup = new FormGroup({});
+    this.selectedAlgorithm.requireExtras?.forEach(field => {
+      tempFormGroup.addControl(field, new FormControl('0', []));
+    });
+    return tempFormGroup;
   }
 }

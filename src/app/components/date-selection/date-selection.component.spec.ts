@@ -38,25 +38,4 @@ describe('DateSelectionComponent', () => {
     fixture.detectChanges();
     expect(component.periodInput.value).toEqual(13);
   });
-
-  // Test to make sure period input is fixed if below min value input. Unsure how Timeout behaves in this ase across computers
-  it('period input should update to adjusted value if the user value is below min', () => {
-    component.periodInput.setValue(2);
-
-    // Timeout to give code time to adjust form value
-    setTimeout(() => {
-      fixture.detectChanges();
-      expect(component.periodInput.value).toEqual(10);
-    }, 500);
-  });
-
-  // Test to make sure period input is fixed if above max value input. Unsure how Timeout behaves in this ase across computers
-  it('period input should update to adjusted value if the user value is above max', () => {
-    component.periodInput.setValue(36);
-    // Timeout to give code time to adjust form value
-    setTimeout(() => {
-      fixture.detectChanges();
-      expect(component.periodInput.value).toEqual(30);
-    }, 500);
-  });
 });

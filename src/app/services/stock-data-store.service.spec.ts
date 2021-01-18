@@ -1,6 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 
 import {StockDataStoreService} from './stock-data-store.service';
+import {combineAll} from 'rxjs/operators';
 
 describe('StockService', () => {
   let service: StockDataStoreService;
@@ -40,5 +41,11 @@ describe('StockService', () => {
   // Test to make sure arrayOfDates start equals selectedDate
   it('arrayOfDates start date must equal selectedDate', () => {
     expect(service.getArrayOfDates()[0]).toEqual(service.getSelectedDate());
+  });
+
+  // Test to make sure setAlgorithm working as intended
+  it('algorithm should be the set algorithm', () => {
+    service.setAlgorithm({algorithmId: '1'});
+    expect(service.getAlgorithm()).toEqual({algorithmId: '1'});
   });
 });
