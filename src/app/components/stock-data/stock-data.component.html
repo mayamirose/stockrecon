@@ -22,10 +22,9 @@
   </div>
 
   <form *ngIf="algorithmForm" [formGroup]="algorithmForm.get('extraFields')">
-    <div class="flex-row wrap" *ngIf="selectedAlgorithm?.requireExtras">
-      <span class="flex-spacer"></span>
+    <div class="flex-row wrap extra-inputs-wrapper" *ngIf="selectedAlgorithm?.requireExtras">
       <ng-container *ngFor="let field of selectedAlgorithm.requireExtras">
-        <div class="padding-bottom flex-column input-container">
+        <div class="flex-column input-container">
           <label class="small-font text-colour">{{field}}</label>
           <input type="number" aria-label="extra field input"
                  autocomplete="off" class="field-input" formControlName="{{field}}">

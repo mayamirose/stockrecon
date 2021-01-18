@@ -68,8 +68,12 @@
   color: $amber-colour
 }
 
+.extra-inputs-wrapper {
+  justify-content: flex-end;
+}
+
 .input-container {
-  margin-left: 20px;
+  padding: 8px;
 }
 
 .field-input {
